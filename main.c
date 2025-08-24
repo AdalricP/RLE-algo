@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(void){
-    char raw[] = "AABBCCDCCDDBBA";
+    char raw[] = "AAABBCCDCCDDBBA";
     char RLE[20] = {0}; 
     char current = raw[0];
     int count = 1; 
@@ -11,21 +11,35 @@ int main(void){
         if(current==raw[i]){
             count++;
         } else {
-            RLE[RLE_index] = current;
-               
-            RLE_index++;
-            RLE[RLE_index] = count + '0'; 
-            RLE_index++;
+            if (count <= 2) {
+                RLE[RLE_index] = current;
+                RLE_index+=(count-1);
+                RLE[RLE_index] = current;
+                RLE_index++;
+            } else {
+                RLE[RLE_index] = current;
+                
+                RLE_index++;
+                RLE[RLE_index] = count + '0'; 
+                RLE_index++;
+            }
             current = raw[i];
             count=1;
         }
     }
 
-    
-    RLE[RLE_index] = current;
-    RLE_index++;
-    RLE[RLE_index] = count + '0';
-    RLE[RLE_index + 1] = '\0';             
+    if (count <= 2) {
+        RLE[RLE_index] = current;
+        RLE_index += (count-1);
+        RLE[RLE_index] = current;
+        RLE_index++;
+    } else {
+        RLE[RLE_index] = current;
+        RLE_index++;
+        RLE[RLE_index] = count + '0';
+        RLE_index++;
+    }
+    RLE[RLE_index] = '\0';             
 
     printf("%s\n", RLE);
     return 0;
